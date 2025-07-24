@@ -1,69 +1,66 @@
-# LLM Fine-tuning on Azure
+# Azure LLM Fine-tuning Guide
 
-### Note: Please use https://github.com/Azure/azure-llm-fine-tuning instead of this repo.
+## Overview
+Welcome to the Azure LLM Fine-tuning project! This repository provides a comprehensive guide for fine-tuning and deploying Large Language Models (LLMs) on Azure. We demonstrate the process using Microsoft's [Phi-3-mini-4k-instruct](https://huggingface.co/microsoft/Phi-3-mini-4k-instruct) model, though the approach works with any publicly licensed LLM from Hugging Face.
 
----
+> **Important Notice**: For the latest official version, please visit https://github.com/Azure/azure-llm-fine-tuning
 
-This hands-on walks you through fine-tuning an open source LLM on Azure and serving the fine-tuned model on Azure. It is intended for Data Scientists and ML engineers who have experience with fine-tuning but are unfamiliar with Azure ML and Mlflow.
-We are using the Microsoft [Phi-3-mini-4k-instruct](https://huggingface.co/microsoft/Phi-3-mini-4k-instruct) model, but you can use it freely as long as it is a public liecnse LLM registered with Hugging Face.
+## Prerequisites
 
-## Contents
+### Azure Resources
+- Azure ML Workspace (you'll need your `<WORKSPACE_NAME>`, `<RESOURCE_GROUP>`, and `<SUBSCRIPTION_ID>`)
+- [Azure ML CLI v2](https://learn.microsoft.com/en-us/azure/machine-learning/concept-v2?view=azureml-api-2#azure-machine-learning-cli-v2) installed
 
-- [Dataset preparation](dataset-preparation)
-- [Fine tuning](fine-tuning)
+### Compute Requirements
+1. **Development Environment**
+   - Compute Instance: `Standard_DS11_v2`
+   - Specs: 2 cores, 14GB RAM, 28GB storage
+   - Purpose: Code development and testing
 
-## Requirements
+2. **Training Environment**
+   - Recommended Options:
+     - NVIDIA A100: `Standard_NC24ads_A100_v4`
+     - NVIDIA V100: `Standard_NC6s_v3`
+   - Note: Low-priority VMs are available for cost optimization
 
-Before starting, you have met the following requirements:
+## Quick Start Guide
 
-- [Azure ML getting started](https://github.com/Azure/azureml-examples/tree/main/tutorials): Connect to Azure ML workspace and get your <WORKSPACE_NAME>, <RESOURCE_GROUP> and <SUBSCRIPTION_ID>.
-- [Azure ML CLI v2](https://learn.microsoft.com/en-us/azure/machine-learning/concept-v2?view=azureml-api-2#azure-machine-learning-cli-v2)
-- ***[Compute instance - for code development]*** A low-end instance without GPU is recommended: `Standard_DS11_v2` (2 cores, 14GB RAM, 28GB storage, No GPUs).
-- ***[Compute cluster - for LLM training]*** A single NVIDIA A100 GPU node (`Standard_NC24ads_A100_v4`) and a single NVIDIA V100 GPU node (`Standard_NC6s_v3`) is recommended. If you do not have a dedicated quota or are on a tight budget, choose Low-priority VM.
+1. **Setup Development Environment**
+   ```shell
+   git clone https://github.com/tech-jarvis/LLM_Finetune_Azure.git
+   conda activate azureml_py310_sdkv2
+   pip install -r requirements.txt
+   ```
 
-## How to get started 
-1. Create your compute instance. For code development, we recommend `Standard_DS11_v2` (2 cores, 14GB RAM, 28GB storage, No GPUs).
-2. Open the terminal of the CI and run: 
-    ```shell
-    git clone https://github.com/daekeun-ml/azure-llm-fine-tuning.git
-    conda activate azureml_py310_sdkv2
-    pip install -r requirements.txt
-    ```
-3. *(Optional)* If you are interested in dataset preprocessing, see the hands-ons in `dataset-preparation` folder.
-4. Go to `fine-tuning` folder and modify `config.yml`.
-5. Choose one of two options. By default, we recommend MLflow.
-    - [Option 1. MLflow] Run `1_training_mlflow.ipynb` and `2_serving.ipynb`, respectively.
-    - [Option 2. Custom] Run `1_training_custom.ipynb` and `2_serving.ipynb`, respectively.
+2. **Project Structure**
+   - `dataset-preparation/`: Tools and guides for data preprocessing
+   - `fine-tuning/`: Core training and deployment scripts
 
-## References
+3. **Training and Deployment**
+   - Configure your settings in `fine-tuning/config.yml`
+   - Choose your preferred approach:
+     - **MLflow Pipeline** (Recommended):
+       1. Run `1_training_mlflow.ipynb`
+       2. Run `2_serving.ipynb`
+     - **Custom Pipeline**:
+       1. Run `1_training_custom.ipynb`
+       2. Run `2_serving.ipynb`
 
-- [Azure Machine Learning examples](https://github.com/Azure/azureml-examples)
-- [Finetune Small Language Model (SLM) Phi-3 using Azure ML](https://techcommunity.microsoft.com/t5/ai-machine-learning-blog/finetune-small-language-model-slm-phi-3-using-azure-machine/ba-p/4130399)
-- [microsoft/Phi-3-mini-4k-instruct](https://huggingface.co/microsoft/Phi-3-mini-4k-instruct): This is Microsoft's official Phi-3-mini-4k-instruct model.
-- [daekeun-ml/Phi-3-medium-4k-instruct-ko-poc-v0.1](https://huggingface.co/daekeun-ml/Phi-3-medium-4k-instruct-ko-poc-v0.1)
+## Additional Resources
 
-## Contributing
+### Technical References
+- [Azure ML Examples Repository](https://github.com/Azure/azureml-examples)
+- [Phi-3 Fine-tuning Tutorial](https://techcommunity.microsoft.com/t5/ai-machine-learning-blog/finetune-small-language-model-slm-phi-3-using-azure-machine/ba-p/4130399)
+- [Phi-3 Model Variants](https://huggingface.co/daekeun-ml/Phi-3-medium-4k-instruct-ko-poc-v0.1)
 
-This project welcomes contributions and suggestions.  Most contributions require you to agree to a
-Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us
-the rights to use your contribution. For details, visit https://cla.opensource.microsoft.com.
+### Legal and Contribution Guidelines
 
-When you submit a pull request, a CLA bot will automatically determine whether you need to provide
-a CLA and decorate the PR appropriately (e.g., status check, comment). Simply follow the instructions
-provided by the bot. You will only need to do this once across all repos using our CLA.
+#### Contributing
+We welcome community contributions! Before contributing:
+1. Review our [Contributor License Agreement (CLA)](https://cla.opensource.microsoft.com)
+2. Follow the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/)
+3. For questions, contact [opencode@microsoft.com](mailto:opencode@microsoft.com)
 
-This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/).
-For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or
-contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
-
-## Trademarks
-
-This project may contain trademarks or logos for projects, products, or services. Authorized use of Microsoft 
-trademarks or logos is subject to and must follow 
-[Microsoft's Trademark & Brand Guidelines](https://www.microsoft.com/en-us/legal/intellectualproperty/trademarks/usage/general).
-Use of Microsoft trademarks or logos in modified versions of this project must not cause confusion or imply Microsoft sponsorship.
-Any use of third-party trademarks or logos are subject to those third-party's policies.
-
-## License Summary
-
-This sample code is provided under the MIT-0 license. See the LICENSE file.
+#### Legal Information
+- **License**: MIT-0 (see LICENSE file)
+- **Trademarks**: Usage of Microsoft trademarks must comply with [Microsoft's Trademark & Brand Guidelines](https://www.microsoft.com/en-us/legal/intellectualproperty/trademarks/usage/general)
